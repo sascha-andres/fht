@@ -8,9 +8,9 @@ import (
 
 // FishHistory represents one command in fish history
 type FishHistory struct {
-	Command string   `yaml:"cmd"`   // Command contains the executed command
-	Paths   []string `yaml:"Paths"` // paths indicate which arguments were file paths, as a hint to the autosuggestion machinery
-	When    int      `yaml:"When"`  // When is the time of history entry in unix time
+	Command string   // Command contains the executed command
+	Paths   []string // paths indicate which arguments were file paths, as a hint to the autosuggestion machinery
+	When    uint64   // When is the time of history entry in unix time
 }
 
 // String implements the stringer interface
