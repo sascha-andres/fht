@@ -11,6 +11,10 @@ import (
 )
 
 // Parser is the fish history file parser
+// There parser works on a few assumptions:
+//   - a line starting with a dash (-) denotes a new entry
+//   - all lines belonging to an entry are properly indented
+//     (if not the dash for paths would trigger a new entry)
 type Parser struct{}
 
 // NewParser returns a parser
@@ -37,15 +41,19 @@ func (parser *Parser) ParseString(data string) ([]fht.FishHistory, error) {
 	scanner := bufio.NewScanner(strings.NewReader(data))
 	for scanner.Scan() {
 		newline := scanner.Text()
-		if strings.HasPrefix(newline, "-") {
+		if strings.HasPrefix(newline, "- ") {
 			if nil != currentHistory {
 				result = append(result, *currentHistory)
 			}
-			currentHistory = newEntry(newline)
-			continue
+			currentHistory = &fht.FishHistory{}
+			newline = strings.TrimPrefix(newline, "- ")
 		}
 		trimmed := strings.Trim(newline, " ")
 		lineData := strings.SplitN(trimmed, ":", 2)
+		if lineData[0] == "cmd" {
+			currentHistory.Command = strings.Trim(lineData[1], " ")
+			continue
+		}
 		if lineData[0] == "when" {
 			err := getWhen(currentHistory, lineData[1])
 			if err != nil {
