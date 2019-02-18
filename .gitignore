@@ -74,3 +74,6 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+fht/dist/
+.build/
+coverage.txt

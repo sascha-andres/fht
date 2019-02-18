@@ -1,9 +1,10 @@
 package fht_test
 
 import (
-	"github.com/sergi/go-diff/diffmatchpatch"
 	"regexp"
 	"testing"
+
+	"github.com/sergi/go-diff/diffmatchpatch"
 )
 import "livingit.de/code/fht"
 

@@ -5,9 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"livingit.de/code/fht"
 	"strconv"
 	"strings"
+
+	"livingit.de/code/fht"
 )
 
 // Parser is the fish history file parser

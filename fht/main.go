@@ -3,12 +3,21 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"livingit.de/code/fht/parser"
 	"os"
 	"regexp"
+
+	"livingit.de/code/fht/parser"
 )
 
 const versionNumber = "develop"
+const date = "develop"
+const commit = "HEAD"
+
+func printVersion() {
+	_, _ = fmt.Fprintf(os.Stdout, "version:     %s\n", versionNumber)
+	_, _ = fmt.Fprintf(os.Stdout, "compiled on: %s\n", date)
+	_, _ = fmt.Fprintf(os.Stdout, "commit:      %s\n", commit)
+}
 
 func main() {
 	stat, _ := os.Stdin.Stat()
@@ -63,12 +72,15 @@ func main() {
 	}
 
 	if showVersion {
-		_, _ = fmt.Fprintln(os.Stdout, versionNumber)
+		printVersion()
 		os.Exit(0)
 	}
 
 	if showHelp {
 		_, _ = fmt.Fprintln(os.Stdout, "fish shell history tool")
+		_, _ = fmt.Fprintln(os.Stdout, "")
+		printVersion()
+		_, _ = fmt.Fprintln(os.Stdout, "")
 		_, _ = fmt.Fprintln(os.Stdout, "usage fht [--delete] [--help] <expression>")
 		_, _ = fmt.Fprintln(os.Stdout, "  --delete  remove matched entries instead of limiting to")
 		_, _ = fmt.Fprintln(os.Stdout, "  --version show version number")
