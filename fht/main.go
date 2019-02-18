@@ -8,6 +8,8 @@ import (
 	"regexp"
 )
 
+const versionNumber = "develop"
+
 func main() {
 	stat, _ := os.Stdin.Stat()
 	if !((stat.Mode() & os.ModeCharDevice) == 0) {
@@ -33,8 +35,9 @@ func main() {
 	}
 
 	showHelp := false
-	delete := false
+	removeEntries := false
 	expression := ""
+	showVersion := false
 
 	arguments := os.Args
 	for _, argument := range arguments[1:] {
@@ -42,7 +45,9 @@ func main() {
 		case "--help":
 			showHelp = true
 		case "--delete":
-			delete = true
+			removeEntries = true
+		case "--version":
+			showVersion = true
 		default:
 			if "" == expression {
 				expression = argument
@@ -57,8 +62,17 @@ func main() {
 		showHelp = true
 	}
 
+	if showVersion {
+		_, _ = fmt.Fprintln(os.Stdout, versionNumber)
+		os.Exit(0)
+	}
+
 	if showHelp {
-		fmt.Println("usage fht [--delete] <expression>")
+		_, _ = fmt.Fprintln(os.Stdout, "fish shell history tool")
+		_, _ = fmt.Fprintln(os.Stdout, "usage fht [--delete] [--help] <expression>")
+		_, _ = fmt.Fprintln(os.Stdout, "  --delete  remove matched entries instead of limiting to")
+		_, _ = fmt.Fprintln(os.Stdout, "  --version show version number")
+		_, _ = fmt.Fprintln(os.Stdout, "  --help    show help")
 		os.Exit(0)
 	}
 
@@ -70,10 +84,10 @@ func main() {
 
 	for _, entry := range history {
 		isMatch, _ := entry.Matches(r)
-		if isMatch && delete {
+		if isMatch && removeEntries {
 			continue
 		}
-		if !isMatch && !delete {
+		if !isMatch && !removeEntries {
 			continue
 		}
 		_, _ = fmt.Fprintln(os.Stdout, &entry)
