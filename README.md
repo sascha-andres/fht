@@ -6,3 +6,4 @@ Use this tool filter your fish history
 
 |Version|Description|
 |---|---|
+|0.1.0|initial version|
