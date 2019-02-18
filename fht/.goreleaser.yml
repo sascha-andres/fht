@@ -1,0 +1,39 @@
+project_name: fht
+builds:
+  - binary: fht
+    main: main.go
+    goos:
+      - windows
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - x86
+    ldflags: -extldflags "-static" -s -w -X livingit.de/cpde/fht/fht/main.versionNumber={{.Version}} -X livingit.de/cpde/fht/fht/main.commit={{.Commit}} -X livingit.de/cpde/fht/fht/main.date={{.Date}}
+    env:
+    - CGO_ENABLED=0
+
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+
+snapshot:
+  name_template: SNAPSHOT-{{.Commit}}
+
+nfpm:
+    vendor: Sascha Andres
+    homepage: https://livingit.de
+    maintainer: Sascha Andres <sascha.andres@outlook.com>
+    description: utility to call other processes with additional environment variables
+    license: Apache 2.0
+    formats:
+      - deb
+    dependencies:
+      - git
+    bindir: /usr/bin
+
+release:
+  draft: true
+  github:
+      owner: sascha-andres
+      name: fht
+
